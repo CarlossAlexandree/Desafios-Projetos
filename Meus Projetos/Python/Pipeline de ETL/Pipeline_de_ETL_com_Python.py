@@ -40,8 +40,8 @@ from google.genai import types
 # URL do servidor local simulado
 sdw2023_api_url = 'http://localhost:3000'
 
-!pip install -q "google-genai>=1.66.0,<2.0.0" "google-auth==2.47.0"
-!npm install -g json-server
+pip install -q "google-genai>=1.66.0,<2.0.0" "google-auth==2.47.0"
+npm install -g json-server
 
 # ==========================================
 # 1. AMBIENTE & MOCK DA API
