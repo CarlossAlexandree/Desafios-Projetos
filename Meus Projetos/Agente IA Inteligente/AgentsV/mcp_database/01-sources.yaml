@@ -1,0 +1,8 @@
+sources:
+  my-pg-source:
+    kind: postgres
+    host: 127.0.0.1
+    port: 5432
+    database: postgres
+    user: postgres
+    password: Alucard@2025

@@ -1,0 +1,64 @@
+kind: sources
+name: postgres-local
+type: postgres
+host: 127.0.0.1
+port: 5432
+database: postgres
+user: postgres
+password: Alucard@2025
+---
+kind: tools
+name: search-all-products-inventory
+type: postgres-sql
+source: postgres-local
+description: "Busca a quantidade atual de um produto disponível no estoque pelo nome."
+parameters:
+  - name: search_term
+    type: string
+    description: "O nome ou termo do produto a ser pesquisado no inventário."
+statement: |
+  SELECT nome, categoria, preco, total_stock 
+  FROM produto 
+  WHERE nome ILIKE '%' || $1 || '%';
+---
+kind: tools
+name: get-sales-metrics-by-channel
+type: postgres-sql
+source: postgres-local
+description: "Calcula o total de unidades vendidas e receita gerada por um canal específico."
+parameters:
+  - name: product_name
+    type: string
+    description: "Nome exato ou parcial do produto."
+  - name: channel
+    type: string
+    description: "Canal de venda para filtrar."
+statement: |
+  SELECT p.nome, SUM(v.quantidade) as total_vendido, SUM(v.quantidade * v.valor_unitario) as receita_total
+  FROM venda v
+  JOIN produto p ON v.id_produto = p.id_produto
+  WHERE p.nome ILIKE '%' || $1 || '%' AND v.canal_venda = $2
+  GROUP BY p.nome;
+---
+kind: tools
+name: get-product-customer-feedback
+type: postgres-sql
+source: postgres-local
+description: "Recupera as avaliações e comentários dos clientes sobre um produto."
+parameters:
+  - name: product_name
+    type: string
+    description: "Nome do produto para buscar os feedbacks."
+statement: |
+  SELECT p.nome, f.rating, f.comentario
+  FROM feedback_venda f
+  JOIN venda v ON f.id_venda = v.id_venda
+  JOIN produto p ON v.id_produto = p.id_produto
+  WHERE p.nome ILIKE '%' || $1 || '%';
+---
+kind: toolsets
+name: metricas_corporativas
+tools:
+  - search-all-products-inventory
+  - get-sales-metrics-by-channel
+  - get-product-customer-feedback

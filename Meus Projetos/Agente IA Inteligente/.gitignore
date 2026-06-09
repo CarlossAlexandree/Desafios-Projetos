@@ -1,0 +1,6 @@
+toolbox.exe
+*.exe
+.env
+.env.local
+**/.env
+**/.env.local

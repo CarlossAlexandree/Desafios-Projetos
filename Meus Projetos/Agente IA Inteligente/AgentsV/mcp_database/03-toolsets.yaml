@@ -1,0 +1,6 @@
+toolsets:
+  metricas_corporativas:
+    tools:
+      - search-all-products-inventory
+      - get-sales-metrics-by-channel
+      - get-product-customer-feedback
