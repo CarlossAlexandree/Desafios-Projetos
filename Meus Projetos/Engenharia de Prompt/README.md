@@ -7,6 +7,7 @@ Este repositório documenta a especificação técnica, a engenharia de prompts 
 ## 1. Arquitetura do Sistema e Divisão de Papéis
 
 O ecossistema é baseado em uma abordagem de múltiplos agentes (Multi-Agent System), onde cada entidade possui um escopo de atuação estrito e diretrizes comportamentais específicas para evitar sobreposição de funções e otimizar a precisão das respostas.
+
 ```
 [Entrada do Usuário] ──> [Agente 01: Triagem & Processamento Técnico]
 │

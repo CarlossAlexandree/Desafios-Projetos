@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Emissão de CO2</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page">
+
+  <header class="page__header header">
+    <div class="header__content">
+      <h1 class="header__title">🍃 Calculadora de Emissão de CO2</h1>
+      <p class="header__subtitle">Calcule as emissões de CO₂ das suas viagens e contribua para um planeta mais sustentável</p>
+    </div>
+  </header>
+
+  <main class="page__main main">
+    <section class="main__section calculator">
+      
+      <form id="calculator-form" class="calculator__form form" novalidate>
+        
+        <div class="form__group form__group--wide">
+          <label for="origin" class="form__label">Origem</label>
+          <input id="origin" name="origin" type="text" class="form__input" list="cities-list" placeholder="Digite a cidade de origem" autocomplete="new-password">
+        </div>
+
+        <div class="form__group form__group--wide">
+          <label for="destination" class="form__label">Destino</label>
+          <input id="destination" name="destination" type="text" class="form__input" list="cities-list" placeholder="Digite a cidade de destino" autocomplete="new-password">
+        </div>
+
+        <datalist id="cities-list"></datalist>
+
+        <div class="form__group">
+          <label for="distance" class="form__label">Distância (km)</label>
+          <input id="distance" name="distance" type="number" class="form__input" readonly>
+          <p class="form__help">A distância será preenchida automaticamente</p>
+        </div>
+
+        <div class="form__group form__group--checkbox">
+          <input id="manual-distance" name="manual-distance" type="checkbox" class="form__checkbox">
+          <label for="manual-distance" class="form__checkbox-label">Inserir distância manualmente</label>
+        </div>
+
+        <fieldset class="form__fieldset transport">
+          <legend class="form__legend">Modo de transporte</legend>
+
+          <div class="transport__grid">
+            <label class="transport__option" for="transport-bicycle">
+              <input id="transport-bicycle" name="transport" value="bicycle" type="radio" class="transport__input">
+              <span class="transport__icon">🚲</span>
+              <span class="transport__text">Bicicleta</span>
+            </label>
+
+            <label class="transport__option" for="transport-car">
+              <input id="transport-car" name="transport" value="car" type="radio" class="transport__input" checked>
+              <span class="transport__icon">🚗</span>
+              <span class="transport__text">Carro</span>
+            </label>
+
+            <label class="transport__option" for="transport-bus">
+              <input id="transport-bus" name="transport" value="bus" type="radio" class="transport__input">
+              <span class="transport__icon">🚌</span>
+              <span class="transport__text">Ônibus</span>
+            </label>
+
+            <label class="transport__option" for="transport-truck">
+              <input id="transport-truck" name="transport" value="truck" type="radio" class="transport__input">
+              <span class="transport__icon">🚚</span>
+              <span class="transport__text">Caminhão</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="form__group form__group--action">
+          <button type="submit" class="form__button">Calcular Emissão</button>
+        </div>
+
+      </form>
+    </section>
+
+    <section id="results" class="main__section results hidden">
+      <div id="results-content" class="results__content"></div>
+    </section>
+
+    <section id="comparison" class="main__section comparison hidden">
+      <div id="comparison-content" class="comparison__content"></div>
+    </section>
+
+    <section id="carbon-credits" class="main__section carbon-credits hidden">
+      <div id="carbon-credits-content" class="carbon-credits__content"></div>
+    </section>
+
+  </main>
+
+  <footer class="page__footer footer">
+    <p class="footer__text">Desenvolvido por: Carlos Alexandre | Projeto GitHub Copilot</p>
+  </footer>
+
+  <script src="js/routes-data.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
