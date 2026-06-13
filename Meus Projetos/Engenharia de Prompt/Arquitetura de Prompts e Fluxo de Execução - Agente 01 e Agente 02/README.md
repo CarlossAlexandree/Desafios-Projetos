@@ -7,11 +7,22 @@ Este repositório documenta a especificação técnica, a engenharia de prompts 
 ## 1. Arquitetura do Sistema e Divisão de Papéis
 
 O ecossistema é baseado em uma abordagem de múltiplos agentes (Multi-Agent System), onde cada entidade possui um escopo de atuação estrito e diretrizes comportamentais específicas para evitar sobreposição de funções e otimizar a precisão das respostas.
-```
-[Entrada do Usuário] ──> [Agente 01: Triagem & Processamento Técnico]
-│
-▼
-[Resposta Estruturada] ──> [Agente 02: Refinamento, Integração & Deploy]
+
+```mermaid
+flowchart TD
+    A([🧑‍💻 Entrada do usuário])
+    B["**Agente 01**\nTriagem & Processamento Técnico\nClassifica, valida e estrutura a solicitação"]
+    C([📦 Resposta Estruturada])
+    D["**Agente 02**\nRefinamento, Integração & Deploy\nProcessa, integra e publica o resultado"]
+    E([✅ Resultado Final Entregue])
+
+    A --> B --> C --> D --> E
+
+    style A fill:#e8e6f0,stroke:#7F77DD,color:#3C3489
+    style B fill:#EEEDFE,stroke:#7F77DD,color:#3C3489
+    style C fill:#f0f0f0,stroke:#888780,color:#444441
+    style D fill:#E1F5EE,stroke:#1D9E75,color:#085041
+    style E fill:#d6f0e6,stroke:#1D9E75,color:#085041
 ```
 
 ---
