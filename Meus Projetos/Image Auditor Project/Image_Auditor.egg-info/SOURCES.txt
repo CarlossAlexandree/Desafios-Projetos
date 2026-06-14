@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+Image_Auditor.egg-info/PKG-INFO
+Image_Auditor.egg-info/SOURCES.txt
+Image_Auditor.egg-info/dependency_links.txt
+Image_Auditor.egg-info/requires.txt
+Image_Auditor.egg-info/top_level.txt

@@ -1,0 +1,231 @@
+Metadata-Version: 2.4
+Name: Image_Auditor
+Version: 0.1.1
+Summary: Um pacote profissional para auditoria, validação e otimização de imagens para web.
+Author-email: Seu Nome <seu.email@exemplo.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: Pillow>=10.0.0
+Requires-Dist: matplotlib>=3.8.0
+
+# 📷 Image Auditor Project
+
+> **A modular, high-performance Python pipeline for visual asset auditing, responsive resizing, and optimized image format conversion — built for production web environments.**
+
+<br>
+
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Pillow](https://img.shields.io/badge/Pillow-10.0%2B-FFD43B?style=flat-square)](https://python-pillow.org/)
+[![License](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
+[![PyPI](https://img.shields.io/badge/PyPI-Image__Auditor-blue?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/)
+
+---
+
+## 📌 Table of Contents
+
+- [Overview](#-overview)
+- [Business Context](#-business-context)
+- [Architecture](#-architecture)
+- [Module Reference](#-module-reference)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Technologies](#-technologies)
+- [Author](#-author)
+
+---
+
+## 🔍 Overview
+
+**Image Auditor Project** is a professional-grade Python package designed to automate the full curation and preparation pipeline of visual assets for the web.
+
+The package covers three core responsibilities:
+
+| Layer | Module | Responsibility |
+|---|---|---|
+| 🔬 **Auditing** | `metrics/analyzer.py` | Quality analysis — brightness, transparency detection |
+| ⚙️ **Processing** | `processing/transformer.py` | Proportional resizing, contrast enhancement |
+| 🗂️ **I/O Utilities** | `utils/io.py` · `utils/plot.py` | Multi-format reading, WebP export, before/after visualization |
+
+---
+
+## 💼 Business Context
+
+In real-world technology environments — e-commerce platforms, content portals, streaming services — unprocessed visual asset uploads introduce critical bottlenecks:
+
+- **High cloud storage costs** from oversized, uncompressed files
+- **Slow page load times** that directly harm Core Web Vitals and SEO rankings
+- **Visual inconsistency** across UI components due to unvalidated aspect ratios
+
+**Image Auditor** solves these challenges by structuring a fully automated, modular processing pipeline that can be integrated into any backend stack — whether via **FastAPI**, **Django**, **AWS Lambda**, or a standalone CLI workflow.
+
+Every image that enters the ecosystem is validated, proportionally resized to target display specifications, and exported to next-generation formats — before it ever reaches the database.
+
+---
+
+## 🏗️ Architecture
+
+The package follows the **Single Responsibility Principle (SRP)**, ensuring each module owns exactly one concern and remains independently testable and maintainable.
+
+```
+Image Auditor Project/
+│
+├── Image_Auditor/                  # Root package — clean public API exposure
+│   ├── __init__.py                 # Centralized imports for simplified consumer access
+│   │
+│   ├── metrics/
+│   │   ├── __init__.py
+│   │   └── analyzer.py             # Visual QA layer: brightness stats, alpha detection
+│   │
+│   ├── processing/
+│   │   ├── __init__.py
+│   │   └── transformer.py          # Geometric transforms: resizing, contrast boost
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       ├── io.py                   # I/O layer: multi-format load, optimized WebP export
+│       └── plot.py                 # Diagnostic visualization: before/after comparison
+│
+├── test_images/                    # Isolated directory for validation assets
+├── pyproject.toml                  # Modern build metadata (PEP 517/621 compliant)
+├── requirements.txt                # Runtime dependency manifest
+├── test_run.py                     # Integration test runner script
+└── README.md                       # Project documentation
+```
+
+---
+
+## 📦 Module Reference
+
+### 🔬 Auditing Layer — `metrics/analyzer.py`
+
+Acts as a **quality assurance firewall**. Before committing computational resources to save an asset, the system extracts statistical information from the pixel matrix to evaluate whether the image meets visual usability standards.
+
+| Function | Description |
+|---|---|
+| `calculate_brightness(image)` | Returns average pixel luminance (0–255). Flags underexposed or overexposed photos. |
+| `has_alpha_channel(image)` | Detects transparency layers (RGBA, LA, P modes). Ensures correct export handling. |
+
+---
+
+### ⚙️ Processing Layer — `processing/transformer.py`
+
+Enforces **responsiveness at the data origin**. Rather than forcing the client browser to download a 4K image to render a 400px card, this layer resizes assets proportionally — preserving the original aspect ratio and eliminating distortion.
+
+| Function | Description |
+|---|---|
+| `resize_to_web(image, max_width)` | Proportionally scales the image down to a configurable `max_width`. No-op if already within bounds. |
+| `boost_contrast(image, factor)` | Applies a parametric contrast enhancement using PIL's `ImageEnhance` engine. |
+
+---
+
+### 🗂️ I/O & Utilities Layer — `utils/io.py` · `utils/plot.py`
+
+Delivers **drastic infrastructure cost reduction**. Legacy JPEG/PNG formats are replaced with modern **WebP**, providing highly efficient compression with no perceptible loss in visual fidelity — reducing file sizes by **30% to 50%** on average.
+
+| Function | Description |
+|---|---|
+| `load_image(path)` | Robust file loader with descriptive error handling for missing assets. |
+| `convert_and_save_webp(image, output_path, quality)` | Exports the processed image to WebP with fine-grained quality control. Handles RGBA transparency automatically. |
+| `plot_before_after(original, processed)` | Renders a side-by-side matplotlib diagnostic for visual validation. |
+
+---
+
+## ⚙️ Installation
+
+**Prerequisites:** Python 3.9+
+
+**1. Clone the repository**
+```bash
+git clone https://github.com/your-username/image-auditor-project.git
+cd image-auditor-project
+```
+
+**2. Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+**3. (Optional) Install the package locally in editable mode**
+```bash
+pip install -e .
+```
+
+---
+
+## 🚀 Usage
+
+Below is the complete production-ready integration flow — load, audit, transform, and persist the optimized asset:
+
+```python
+import os
+from Image_Auditor import (
+    load_image,
+    calculate_brightness,
+    resize_to_web,
+    convert_and_save_webp
+)
+
+# ── 1. Define the target asset path ──────────────────────────────────────────
+image_path = "test_images/Foto 01.jpg"
+
+if not os.path.exists(image_path):
+    print("⚠️  Asset not found at the specified path.")
+else:
+    print("🚀 Initializing Image Auditor pipeline...\n")
+
+    # ── 2. Load the asset via the I/O utility layer ───────────────────────────
+    img = load_image(image_path)
+    print("✅  Image successfully loaded into memory.")
+
+    # ── 3. Run the visual metrics audit (QA layer) ────────────────────────────
+    brightness = calculate_brightness(img)
+    print(f"📊  QA Report → Average brightness: {brightness:.2f} / 255")
+
+    # ── 4. Apply geometric transformation for web targets ─────────────────────
+    img_optimized = resize_to_web(img, max_width=800)
+    print(f"📐  Resizing complete → New width: {img_optimized.width}px")
+
+    # ── 5. Export to high-performance WebP format ─────────────────────────────
+    output_path = "test_images/resultado_final.webp"
+    convert_and_save_webp(img_optimized, output_path, quality=85)
+    print(f"💾  Success! Optimized asset saved at: {output_path}")
+```
+
+**Expected output:**
+```
+🚀 Initializing Image Auditor pipeline...
+
+✅  Image successfully loaded into memory.
+📊  QA Report → Average brightness: 142.87 / 255
+📐  Resizing complete → New width: 800px
+💾  Success! Optimized asset saved at: test_images/resultado_final.webp
+```
+
+---
+
+## 🛠️ Technologies
+
+| Technology | Role |
+|---|---|
+| [**Python 3.9+**](https://www.python.org/) | Core language and runtime |
+| [**Pillow (PIL)**](https://python-pillow.org/) | Image processing engine — read, transform, encode |
+| [**Matplotlib**](https://matplotlib.org/) | Diagnostic visualization for before/after auditing |
+| [**Setuptools / pyproject.toml**](https://setuptools.pypa.io/) | Modern PEP 517/621 compliant build backend |
+| [**Twine**](https://twine.readthedocs.io/) | Secure package publishing to PyPI |
+
+---
+
+## ✒️ Author
+
+Developed by **Carlos Alexandre** as a practical project focused on modularization, software architecture principles, and professional Python package distribution via PyPI.
+
+<br>
+
+---
+
+<p align="center">
+  <sub>Built with precision · Engineered for production · Distributed via PyPI</sub>
+</p>
