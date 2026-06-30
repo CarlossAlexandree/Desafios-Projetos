@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Pytest e cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# VS Code
+.vscode/
+
+# Modelos pesados (baixar/treinar separadamente)
+models/*.caffemodel
+models/*.keras
+models/class_names.json
+models/training_meta.json
+
+# Dataset (fotos pessoais não versionadas)
+dataset/train/*/
+dataset/val/*/
+!dataset/train/.gitkeep
+!dataset/val/.gitkeep
+
+# Saídas geradas
+output/*.jpg
+output/*.png
+output/*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

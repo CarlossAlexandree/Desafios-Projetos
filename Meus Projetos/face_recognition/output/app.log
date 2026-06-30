@@ -1,0 +1,61 @@
+2026-06-30 16:07:23 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:07:23 [INFO] __main__: SISTEMA DE RECONHECIMENTO FACIAL
+2026-06-30 16:07:23 [INFO] __main__:   Rede 1: SSD ResNet-10 (OpenCV DNN) — Detecção
+2026-06-30 16:07:23 [INFO] __main__:   Rede 2: MobileNetV2 (TensorFlow)   — Reconhecimento
+2026-06-30 16:07:23 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:07:23 [ERROR] __main__: Arquivo não encontrado: Imagem não encontrada: assets\foto_teste.jpg
+2026-06-30 16:07:56 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:07:56 [INFO] __main__: SISTEMA DE RECONHECIMENTO FACIAL
+2026-06-30 16:07:56 [INFO] __main__:   Rede 1: SSD ResNet-10 (OpenCV DNN) — Detecção
+2026-06-30 16:07:56 [INFO] __main__:   Rede 2: MobileNetV2 (TensorFlow)   — Reconhecimento
+2026-06-30 16:07:56 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:07:56 [ERROR] __main__: Arquivo não encontrado: Imagem não encontrada: assets\foto_teste.jpg
+2026-06-30 16:08:33 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:08:33 [INFO] __main__: SISTEMA DE RECONHECIMENTO FACIAL
+2026-06-30 16:08:33 [INFO] __main__:   Rede 1: SSD ResNet-10 (OpenCV DNN) — Detecção
+2026-06-30 16:08:33 [INFO] __main__:   Rede 2: MobileNetV2 (TensorFlow)   — Reconhecimento
+2026-06-30 16:08:33 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:08:34 [INFO] src.image_utils: Imagem carregada: foto_teste.jpg (960x638)
+2026-06-30 16:08:34 [INFO] __main__: Imagem: assets\foto_teste.jpg
+2026-06-30 16:08:34 [INFO] __main__: 
+[Rede 1] Carregando detector SSD...
+2026-06-30 16:08:34 [INFO] src.detector: Carregando detector SSD de 'res10_300x300_ssd_iter_140000.caffemodel'
+2026-06-30 16:08:34 [INFO] src.detector: Detector SSD pronto.
+2026-06-30 16:08:35 [INFO] __main__: [Rede 1] 1 rosto(s) detectado(s).
+2026-06-30 16:08:35 [INFO] __main__: 
+[Rede 2] Carregando classificador TensorFlow...
+2026-06-30 16:08:35 [INFO] src.classifier: Carregando classificador de 'face_recognizer.keras'
+2026-06-30 16:08:36 [WARNING] tensorflow: TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+2026-06-30 16:08:37 [INFO] src.classifier: Classificador pronto. Classes: ['alexandre', 'felipe']
+2026-06-30 16:08:37 [INFO] __main__: 
+[Resultado] Reconhecendo identidades:
+2026-06-30 16:08:38 [INFO] __main__:   Rosto 1: felipe               (80.8%)
+2026-06-30 16:08:38 [INFO] src.image_utils: Resultado salvo em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\output\resultado.jpg
+2026-06-30 16:08:38 [INFO] __main__: 
+✓ Resultado salvo em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\output\resultado.jpg
+2026-06-30 16:08:38 [INFO] __main__:   Para visualizar: start D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\output\resultado.jpg
+2026-06-30 16:25:07 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:25:07 [INFO] __main__: SISTEMA DE RECONHECIMENTO FACIAL
+2026-06-30 16:25:07 [INFO] __main__:   Rede 1: SSD ResNet-10 (OpenCV DNN) — Detecção
+2026-06-30 16:25:07 [INFO] __main__:   Rede 2: MobileNetV2 (TensorFlow)   — Reconhecimento
+2026-06-30 16:25:07 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 16:25:08 [INFO] src.image_utils: Imagem carregada: foto_teste2.jpg (400x300)
+2026-06-30 16:25:08 [INFO] __main__: Imagem: assets\foto_teste2.jpg
+2026-06-30 16:25:08 [INFO] __main__: 
+[Rede 1] Carregando detector SSD...
+2026-06-30 16:25:08 [INFO] src.detector: Carregando detector SSD de 'res10_300x300_ssd_iter_140000.caffemodel'
+2026-06-30 16:25:09 [INFO] src.detector: Detector SSD pronto.
+2026-06-30 16:25:09 [INFO] __main__: [Rede 1] 2 rosto(s) detectado(s).
+2026-06-30 16:25:09 [INFO] __main__: 
+[Rede 2] Carregando classificador TensorFlow...
+2026-06-30 16:25:09 [INFO] src.classifier: Carregando classificador de 'face_recognizer.keras'
+2026-06-30 16:25:14 [WARNING] tensorflow: TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+2026-06-30 16:25:16 [INFO] src.classifier: Classificador pronto. Classes: ['alexandre', 'felipe']
+2026-06-30 16:25:16 [INFO] __main__: 
+[Resultado] Reconhecendo identidades:
+2026-06-30 16:25:19 [INFO] __main__:   Rosto 1: alexandre            (63.6%)
+2026-06-30 16:25:19 [INFO] __main__:   Rosto 2: Desconhecido         (59.3%)
+2026-06-30 16:25:19 [INFO] src.image_utils: Resultado salvo em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\output\resultado.jpg
+2026-06-30 16:25:19 [INFO] __main__: 
+✓ Resultado salvo em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\output\resultado.jpg
+2026-06-30 16:25:19 [INFO] __main__:   Para visualizar: start D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\output\resultado.jpg

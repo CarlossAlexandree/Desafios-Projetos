@@ -1,0 +1,6 @@
+2026-06-29 13:12:40 [INFO] src.image_utils: Imagem carregada: photo.jpg (640x640)
+2026-06-29 13:12:40 [INFO] src.detector: Carregando modelo SSD de 'models\res10_300x300_ssd_iter_140000.caffemodel'
+2026-06-29 13:12:40 [INFO] src.detector: Modelo carregado com sucesso.
+2026-06-29 13:12:41 [INFO] src.detector: 1 face(s) detectada(s).
+2026-06-29 13:12:41 [INFO] src.image_utils: Imagem salva em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\Detector Facial baseado em SSD\output\resultado.jpg
+2026-06-29 13:12:41 [INFO] __main__: Processo concluído. Resultado salvo em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\Detector Facial baseado em SSD\output\resultado.jpg

@@ -1,0 +1,98 @@
+2026-06-30 15:58:42 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 15:58:42 [INFO] __main__: TREINAMENTO DO RECONHECEDOR FACIAL
+2026-06-30 15:58:42 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-06-30 15:58:42 [INFO] __main__: Dataset: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\dataset\train
+2026-06-30 15:58:42 [INFO] __main__: Identidades encontradas: 2
+2026-06-30 15:58:42 [INFO] __main__:   alexandre            → 15 imagem(ns)
+2026-06-30 15:58:42 [INFO] __main__:   felipe               → 12 imagem(ns)
+2026-06-30 15:58:42 [INFO] __main__: 
+[1/4] Carregando dataset...
+2026-06-30 15:58:44 [INFO] src.classifier: Classes encontradas (2): ['alexandre', 'felipe']
+2026-06-30 15:58:45 [INFO] __main__: Classes: ['alexandre', 'felipe']
+2026-06-30 15:58:45 [INFO] __main__: 
+[2/4] Construindo modelo MobileNetV2...
+2026-06-30 15:58:48 [WARNING] tensorflow: TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+2026-06-30 15:58:48 [INFO] src.classifier: Modelo criado: MobileNetV2 + Dense(2) | Parâmetros treináveis: 2562
+2026-06-30 15:58:48 [INFO] __main__: 
+[3/4] FASE 1 — Transfer Learning (base congelada)
+2026-06-30 15:58:48 [INFO] __main__: Épocas: 20 | Batch: 32
+2026-06-30 15:58:48 [INFO] __main__: ────────────────────────────────────────
+2026-06-30 15:59:16 [INFO] __main__: Fase 1 concluída. Melhor val_accuracy: 0.8000
+2026-06-30 15:59:16 [INFO] __main__: 
+[4/4] FASE 2 — Fine-Tuning (descongelando últimas 30 camadas)
+2026-06-30 15:59:16 [INFO] __main__: Épocas: 10 | LR: 1e-5
+2026-06-30 15:59:16 [INFO] __main__: ────────────────────────────────────────
+2026-06-30 15:59:16 [INFO] src.classifier: Fine-tuning: 30 camadas descongeladas | Params treináveis: 1528962
+2026-06-30 15:59:55 [INFO] __main__: Fase 2 concluída. Melhor val_accuracy: 0.8000
+2026-06-30 15:59:57 [INFO] __main__: Modelo salvo em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\models\face_recognizer.keras
+2026-06-30 15:59:57 [INFO] __main__: Classes salvas em: D:\DIO - Cursos e Projetos\Projetos - GitHub\GitHub\Meus Projetos\face_recognition\models\class_names.json
+2026-06-30 15:59:57 [INFO] __main__: 
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+━
+2026-06-30 15:59:57 [INFO] __main__: ✓ TREINAMENTO CONCLUÍDO!
+2026-06-30 15:59:57 [INFO] __main__:   Modelo        : models\face_recognizer.keras
+2026-06-30 15:59:57 [INFO] __main__:   Classes       : models\class_names.json
+2026-06-30 15:59:57 [INFO] __main__:   Metadados     : models\training_meta.json
+2026-06-30 15:59:57 [INFO] __main__:   Melhor accuracy: 80.00% (Fase 1) → 80.00% (Fase 2)
+2026-06-30 15:59:57 [INFO] __main__: 
+Próximo passo:
+2026-06-30 15:59:57 [INFO] __main__:   python recognize.py --image assets/foto.jpg
+2026-06-30 15:59:57 [INFO] __main__: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

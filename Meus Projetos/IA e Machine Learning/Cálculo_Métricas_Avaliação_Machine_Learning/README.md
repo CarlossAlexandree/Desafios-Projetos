@@ -7,7 +7,7 @@
 
 ## 📌 Sobre o Projeto
 
-Implementação e cálculo manual das principais métricas de avaliação de modelos de classificação, aplicadas a uma CNN treinada no dataset MNIST. As métricas são calculadas a partir da Matriz de Confusão utilizando as fórmulas da Tabela 1 do enunciado do projeto.
+Implementação e cálculo manual das principais métricas de avaliação de modelos de classificação, aplicadas a uma CNN treinada no dataset MNIST. As métricas são calculadas a partir da Matriz de Confusão disponibilizada como modelo para as métricas.
 
 ## 🎯 Métricas Implementadas
 
