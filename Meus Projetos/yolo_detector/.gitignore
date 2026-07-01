@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Pytest e cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# VS Code
+.vscode/
+
+# Modelos YOLOv8 (baixados automaticamente pelo ultralytics)
+models/*.pt
+*.pt
+
+# Dataset e imagens geradas
+dataset/images/*
+dataset/labels/*
+!dataset/images/.gitkeep
+!dataset/labels/.gitkeep
+
+# Saídas geradas
+output/*.jpg
+output/*.png
+output/*.avi
+output/*.log
+
+# Assets grandes (opcional — remova se quiser versionar as imagens de teste)
+# assets/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
