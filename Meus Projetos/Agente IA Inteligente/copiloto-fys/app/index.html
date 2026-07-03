@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copiloto FYS — Padarias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1B1E;
+    --surface:#12292C;
+    --surface-2:#173338;
+    --border:#1F4448;
+    --text:#F2F7F5;
+    --muted:#8FADA9;
+    --orange:#FF7A3D;
+    --lime:#C6E86B;
+    --purple:#9B5DE5;
+    --low:#3E5B57;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 85% -10%, rgba(255,122,61,0.14), transparent 45%),
+      radial-gradient(circle at -10% 110%, rgba(198,232,107,0.10), transparent 45%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 20px 60px;}
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);margin:0 0 6px;}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,40px);margin:0;line-height:1.05;}
+  .subtitle{color:var(--muted);max-width:520px;margin-top:8px;font-size:14.5px;}
+  .stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:10px 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);}
+  .stat-pill b{color:var(--orange);font-size:16px;}
+
+  .grid{display:grid;grid-template-columns:1.45fr 1fr;gap:22px;align-items:start;}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;}}
+
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+  .panel h2{font-family:'Space Grotesk',sans-serif;font-size:18px;margin:0 0 4px;}
+  .panel-sub{color:var(--muted);font-size:13px;margin:0 0 16px;}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .chip{border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12.5px;padding:7px 13px;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;transition:.15s;}
+  .chip.active{background:var(--orange);border-color:var(--orange);color:#1a0d05;font-weight:600;}
+  .chip:hover{border-color:var(--orange);}
+
+  .padaria-card{
+    display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;
+    padding:13px;border-radius:10px;border:1px solid transparent;
+    cursor:pointer;transition:.15s;margin-bottom:8px;background:var(--surface-2);
+  }
+  .padaria-card:hover{border-color:var(--orange);}
+  .padaria-card.selected{border-color:var(--lime);background:#1B3A34;}
+  .gauge{position:relative;width:52px;height:52px;}
+  .gauge svg{transform:rotate(-90deg);}
+  .gauge-score{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;}
+  .pcard-name{font-weight:600;font-size:14.5px;}
+  .pcard-meta{color:var(--muted);font-size:12px;margin-top:2px;}
+  .badge{font-size:11px;font-family:'IBM Plex Mono',monospace;padding:4px 9px;border-radius:999px;white-space:nowrap;}
+  .badge-alta{background:rgba(255,122,61,.18);color:var(--orange);}
+  .badge-media{background:rgba(198,232,107,.15);color:var(--lime);}
+  .badge-baixa{background:rgba(143,173,169,.15);color:var(--muted);}
+  .fys-tag{font-size:10.5px;color:var(--purple);margin-top:3px;display:block;}
+
+  /* chat */
+  .chat-box{display:flex;flex-direction:column;gap:12px;}
+  textarea{
+    width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
+    color:var(--text);padding:12px;font-family:'Inter',sans-serif;font-size:13.5px;resize:vertical;min-height:70px;
+  }
+  textarea:focus{outline:none;border-color:var(--orange);}
+  .selected-ctx{font-size:12px;color:var(--lime);font-family:'IBM Plex Mono',monospace;min-height:16px;}
+  button.primary{
+    background:var(--orange);color:#1a0d05;border:none;border-radius:10px;padding:11px 18px;
+    font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;font-size:14px;letter-spacing:.01em;
+  }
+  button.primary:hover{filter:brightness(1.08);}
+  .example-row{display:flex;gap:6px;flex-wrap:wrap;}
+  .example-chip{font-size:11.5px;border:1px dashed var(--border);color:var(--muted);padding:5px 10px;border-radius:8px;cursor:pointer;}
+  .example-chip:hover{color:var(--lime);border-color:var(--lime);}
+
+  .response{display:none;margin-top:6px;border-top:1px solid var(--border);padding-top:14px;}
+  .response.show{display:block;}
+  .resp-block{margin-bottom:13px;}
+  .resp-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--lime);margin-bottom:5px;}
+  .resp-text{font-size:13.5px;line-height:1.5;}
+  .wa-box{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px;position:relative;}
+  .copy-btn{position:absolute;top:8px;right:8px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:4px 9px;border-radius:6px;cursor:pointer;}
+  .copy-btn:hover{color:var(--lime);border-color:var(--lime);}
+
+  footer{margin-top:30px;color:var(--muted);font-size:11.5px;font-family:'IBM Plex Mono',monospace;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <p class="eyebrow">Copiloto FYS · protótipo local</p>
+      <h1>Priorização de padarias<br>+ copiloto de vendas</h1>
+      <p class="subtitle">FYS captura hoje 0,9% do mercado de refrigerante em padarias. Este painel ajuda o vendedor a decidir onde bater e o que dizer quando chegar lá — 100% baseado em regras locais, sem chamada de API.</p>
+    </div>
+    <div class="stat-pill">Penetração atual FYS em padarias<br><b>0,9%</b> de 245,8 mil HL</div>
+  </header>
+
+  <div class="grid">
+
+    <div class="panel">
+      <h2>Ranking de priorização</h2>
+      <p class="panel-sub">Score local = potencial do PDV + facilidade de ativação + urgência + oportunidade. Clique numa padaria para usá-la de contexto no copiloto →</p>
+      <div class="filters" id="filters">
+        <button class="chip active" data-f="todas">Todas</button>
+        <button class="chip" data-f="alta">Alta prioridade</button>
+        <button class="chip" data-f="media">Média prioridade</button>
+        <button class="chip" data-f="baixa">Baixa prioridade</button>
+        <button class="chip" data-f="oportunidade">Ainda não vende FYS</button>
+      </div>
+      <div id="lista"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Copiloto de vendas</h2>
+      <p class="panel-sub">Descreva a objeção/situação do cliente. O motor identifica o padrão e sugere argumento + mensagem.</p>
+      <div class="chat-box">
+        <div class="selected-ctx" id="ctxLabel">Nenhuma padaria selecionada — resposta será genérica.</div>
+        <textarea id="situacao" placeholder="Ex.: ele disse que já vende Coca e não tem espaço na geladeira..."></textarea>
+        <div class="example-row">
+          <span class="example-chip" data-ex="Nunca ouvi falar dessa marca">"Nunca ouvi falar"</span>
+          <span class="example-chip" data-ex="Já vendo Coca, meu cliente é fiel">"Já vendo Coca"</span>
+          <span class="example-chip" data-ex="Tenho medo de não vender e ficar com produto parado">"Medo de encalhar"</span>
+          <span class="example-chip" data-ex="Agora não é o momento, me liga outro dia">"Agora não é o momento"</span>
+        </div>
+        <button class="primary" id="btnGerar">Gerar orientação →</button>
+
+        <div class="response" id="response">
+          <div class="resp-block"><div class="resp-label">Diagnóstico</div><div class="resp-text" id="rDiag"></div></div>
+          <div class="resp-block"><div class="resp-label">Classificação da oportunidade</div><div class="resp-text" id="rClass"></div></div>
+          <div class="resp-block"><div class="resp-label">Argumento recomendado</div><div class="resp-text" id="rArg"></div></div>
+          <div class="resp-block">
+            <div class="resp-label">Mensagem pronta (WhatsApp)</div>
+            <div class="wa-box"><button class="copy-btn" id="btnCopy">copiar</button><span id="rWa"></span></div>
+          </div>
+          <div class="resp-block"><div class="resp-label">Próximo passo</div><div class="resp-text" id="rNext"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>Copiloto FYS — protótipo inicial · dados fictícios · lógica local</footer>
+</div>
+
+<script>
+const PADARIAS = [{"id": 1, "nome": "Padaria Bom Dia", "bairro": "Vila Mariana", "cidade": "São Paulo", "volume_cerveja_hl_mes": 8.5, "vende_fys": false, "concorrencia": ["Coca-Cola", "Guaraná Antarctica"], "espaco_geladeira": "medio", "dias_desde_ultima_visita": 62, "perfil_publico": "trabalhadores e universitários, café da manhã rápido"}, {"id": 2, "nome": "Padaria Estrela do Sul", "bairro": "Ipiranga", "cidade": "São Paulo", "volume_cerveja_hl_mes": 15.2, "vende_fys": false, "concorrencia": ["Coca-Cola"], "espaco_geladeira": "alto", "dias_desde_ultima_visita": 18, "perfil_publico": "família, movimento constante o dia todo"}, {"id": 3, "nome": "Panificadora Nova Aurora", "bairro": "Pinheiros", "cidade": "São Paulo", "volume_cerveja_hl_mes": 6.1, "vende_fys": true, "concorrencia": ["Coca-Cola", "H2OH!"], "espaco_geladeira": "baixo", "dias_desde_ultima_visita": 10, "perfil_publico": "jovem, foco em saúde e menos açúcar"}, {"id": 4, "nome": "Padaria Cantinho do Pão", "bairro": "Santo Amaro", "cidade": "São Paulo", "volume_cerveja_hl_mes": 3.0, "vende_fys": false, "concorrencia": ["Coca-Cola", "Fanta"], "espaco_geladeira": "baixo", "dias_desde_ultima_visita": 95, "perfil_publico": "bairro residencial, público mais velho"}, {"id": 5, "nome": "Padaria Trigo & Cia", "bairro": "Moema", "cidade": "São Paulo", "volume_cerveja_hl_mes": 4.4, "vende_fys": false, "concorrencia": ["Coca-Cola", "Guaraná Antarctica", "Del Valle"], "espaco_geladeira": "alto", "dias_desde_ultima_visita": 40, "perfil_publico": "público de alto poder aquisitivo, busca produtos premium/saudáveis"}, {"id": 6, "nome": "Padaria União", "bairro": "Mooca", "cidade": "São Paulo", "volume_cerveja_hl_mes": 12.0, "vende_fys": false, "concorrencia": ["Coca-Cola"], "espaco_geladeira": "medio", "dias_desde_ultima_visita": 25, "perfil_publico": "tradicional, forte em cerveja de fim de tarde"}, {"id": 7, "nome": "Padaria Pão Quente 24h", "bairro": "Centro", "cidade": "São Paulo", "volume_cerveja_hl_mes": 2.1, "vende_fys": false, "concorrencia": ["Coca-Cola", "Fanta", "Sprite"], "espaco_geladeira": "baixo", "dias_desde_ultima_visita": 120, "perfil_publico": "compra por impulso, alto fluxo de passagem, noturno"}, {"id": 8, "nome": "Padaria Recanto Doce", "bairro": "Tatuapé", "cidade": "São Paulo", "volume_cerveja_hl_mes": 9.8, "vende_fys": true, "concorrencia": ["Coca-Cola"], "espaco_geladeira": "alto", "dias_desde_ultima_visita": 5, "perfil_publico": "família, consumo diário de pão e lanche"}, {"id": 9, "nome": "Padaria Sabor da Manhã", "bairro": "Vila Prudente", "cidade": "São Paulo", "volume_cerveja_hl_mes": 1.5, "vende_fys": false, "concorrencia": [], "espaco_geladeira": "medio", "dias_desde_ultima_visita": 80, "perfil_publico": "vizinhança pequena, poucos SKUs de bebida"}, {"id": 10, "nome": "Padaria Boulevard", "bairro": "Itaim Bibi", "cidade": "São Paulo", "volume_cerveja_hl_mes": 5.5, "vende_fys": false, "concorrencia": ["Coca-Cola", "Guaraná Antarctica"], "espaco_geladeira": "alto", "dias_desde_ultima_visita": 33, "perfil_publico": "executivos, almoço rápido, busca opções zero/diet"}, {"id": 11, "nome": "Padaria Central da Vila", "bairro": "Vila Madalena", "cidade": "São Paulo", "volume_cerveja_hl_mes": 7.2, "vende_fys": false, "concorrencia": ["Coca-Cola"], "espaco_geladeira": "medio", "dias_desde_ultima_visita": 55, "perfil_publico": "jovem, universitário, boêmio"}, {"id": 12, "nome": "Padaria Raízes", "bairro": "Campo Belo", "cidade": "São Paulo", "volume_cerveja_hl_mes": 3.9, "vende_fys": false, "concorrencia": ["Coca-Cola", "Fanta"], "espaco_geladeira": "baixo", "dias_desde_ultima_visita": 70, "perfil_publico": "família, compra de fim de semana"}];
+
+const ESPACO_PONTOS = { baixo: 5, medio: 10, alto: 15 };
+
+function calcularPrioridade(p, maiorVolume){
+  const potencial = maiorVolume ? (p.volume_cerveja_hl_mes / maiorVolume) * 40 : 0;
+  const facilidade = ESPACO_PONTOS[p.espaco_geladeira] ?? 5;
+  const urgencia = Math.min(p.dias_desde_ultima_visita / 120, 1) * 20;
+  const oportunidade = p.vende_fys ? 5 : 25;
+  const bonus = (p.concorrencia?.length ?? 0) >= 2 ? 5 : 0;
+  let score = Math.round((potencial + facilidade + urgencia + oportunidade + bonus) * 10) / 10;
+  score = Math.min(score, 100);
+  let classificacao = score >= 70 ? 'alta' : score >= 40 ? 'media' : 'baixa';
+  return {...p, score, classificacao};
+}
+
+function priorizar(lista){
+  const maior = Math.max(...lista.map(p => p.volume_cerveja_hl_mes));
+  return lista.map(p => calcularPrioridade(p, maior)).sort((a,b) => b.score - a.score);
+}
+
+const OBJECOES = [
+  { chave:'marca_desconhecida', titulo:'Marca desconhecida',
+    gatilhos:['não conheço','nunca vi','quem é essa marca','isso vende','marca nova'],
+    argumento:'Ancore na Heineken (credibilidade e distribuição) e cite o investimento recente em mídia (campanha no BBB gerou 2 bilhões de impactos no 1º semestre). Sugira começar pequeno: 1-2 sabores, para reduzir o risco percebido.' },
+  { chave:'sem_espaco', titulo:'Sem espaço na geladeira',
+    gatilhos:['sem espaço','não tenho espaço','não tem espaço','geladeira cheia','não cabe'],
+    argumento:'Proponha um trade simples: substituir o SKU de menor giro atual por 1 sabor FYS Zero. A lata 350ml é compacta e pensada para single serve — não exige aumento de espaço.' },
+  { chave:'ja_vende_concorrente', titulo:'Já vende o concorrente / cliente fiel a outra marca',
+    gatilhos:['já vendo coca','já vende coca','vende coca','já vendo outra marca','já vende outra marca','cliente é fiel','não vou trocar','já tenho fornecedor'],
+    argumento:'Reforce que FYS complementa, não substitui: ocupa o espaço do consumidor que busca algo diferente ou menos açúcar e que hoje pode estar saindo sem comprar nada por falta de opção.' },
+  { chave:'medo_nao_girar', titulo:'Medo de não girar / produto encalhar',
+    gatilhos:['medo de não vender','vai encalhar','não quero risco','produto parado'],
+    argumento:'Sugira um pedido inicial pequeno (1-2 caixas, 1 sabor) com visibilidade simples no balcão/geladeira, para gerar giro rápido e reduzir a decisão a baixo risco.' },
+  { chave:'preco_margem', titulo:'Preço / margem',
+    gatilhos:['tá caro','margem apertada','desconto','preço alto'],
+    argumento:'Desloque o argumento de preço para giro incremental: é venda adicional (atende demanda hoje não atendida), não substituição de margem já conquistada.' },
+  { chave:'sem_tempo_agora', titulo:'Baixa prioridade / sem tempo agora',
+    gatilhos:['depois a gente vê','agora não','me liga outro dia','sem tempo'],
+    argumento:"Peça uma decisão pequena e rápida — não 'adotar o portfólio', só 'testar 1 sabor por 2 semanas' — para não competir por atenção com decisões maiores do dono." },
+];
+const DEFAULT_OBJECAO = { titulo:'Situação não mapeada automaticamente',
+  argumento:'Comece pela credibilidade Heineken + dado de zero açúcar (48% dos consumidores buscam menos açúcar) e proponha um teste pequeno de 1 sabor, sem pressionar o portfólio inteiro.' };
+
+function diagnosticar(texto){
+  const t = texto.toLowerCase();
+  for(const o of OBJECOES){ if(o.gatilhos.some(g => t.includes(g))) return o; }
+  return DEFAULT_OBJECAO;
+}
+
+function classificarOportunidade(p){
+  if(!p) return 'Indefinido — sem dados do PDV.';
+  if(p.classificacao === 'alta' && !p.vende_fys) return 'Alto potencial de conversão — priorizar visita.';
+  if(p.vende_fys) return 'Cliente ativo — foco em expandir sortimento.';
+  return 'Potencial moderado — abordagem padrão.';
+}
+
+function gerarMensagem(p){
+  const menciona = p && p.concorrencia && p.concorrencia.length ? 'Sei que já vende outras marcas por aí, ' : '';
+  return `Oi! Passando pra te apresentar rapidinho a FYS — refrigerante zero açúcar do Grupo Heineken. ${menciona}topa testar 1 sabor por umas semanas pra ver a saída? Sem compromisso de trocar tudo, só somar uma opção que o pessoal anda pedindo.`;
+}
+
+// ---------------- UI ----------------
+let ranking = priorizar(PADARIAS);
+let filtro = 'todas';
+let selecionada = null;
+
+function corGauge(score){
+  if(score >= 70) return 'var(--orange)';
+  if(score >= 40) return 'var(--lime)';
+  return 'var(--low)';
+}
+
+function svgGauge(score){
+  const r = 21, c = 2*Math.PI*r, pct = Math.min(score,100)/100;
+  return `<svg width="52" height="52" viewBox="0 0 52 52">
+    <circle cx="26" cy="26" r="${r}" fill="none" stroke="var(--border)" stroke-width="5"/>
+    <circle cx="26" cy="26" r="${r}" fill="none" stroke="${corGauge(score)}" stroke-width="5"
+      stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function render(){
+  const lista = document.getElementById('lista');
+  let dados = ranking;
+  if(filtro === 'alta') dados = dados.filter(p=>p.classificacao==='alta');
+  if(filtro === 'media') dados = dados.filter(p=>p.classificacao==='media');
+  if(filtro === 'baixa') dados = dados.filter(p=>p.classificacao==='baixa');
+  if(filtro === 'oportunidade') dados = dados.filter(p=>!p.vende_fys);
+
+  const badgeClasse = {alta:'badge-alta', media:'badge-media', baixa:'badge-baixa'};
+  const badgeTexto = {alta:'Alta prioridade', media:'Média prioridade', baixa:'Baixa prioridade'};
+
+  lista.innerHTML = dados.map(p => `
+    <div class="padaria-card ${selecionada && selecionada.id===p.id ? 'selected':''}" data-id="${p.id}">
+      <div class="gauge">${svgGauge(p.score)}<div class="gauge-score">${p.score}</div></div>
+      <div>
+        <div class="pcard-name">${p.nome}</div>
+        <div class="pcard-meta">${p.bairro} · ${p.dias_desde_ultima_visita}d sem visita · geladeira ${p.espaco_geladeira}</div>
+        ${p.vende_fys ? '<span class="fys-tag">● já vende FYS</span>' : ''}
+      </div>
+      <span class="badge ${badgeClasse[p.classificacao]}">${badgeTexto[p.classificacao]}</span>
+    </div>
+  `).join('');
+
+  lista.querySelectorAll('.padaria-card').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = Number(el.dataset.id);
+      selecionada = ranking.find(p => p.id === id);
+      document.getElementById('ctxLabel').textContent =
+        `Contexto ativo: ${selecionada.nome} (${selecionada.bairro}) — ${selecionada.vende_fys ? 'já vende FYS' : 'ainda não vende FYS'}`;
+      render();
+    });
+  });
+}
+
+document.getElementById('filters').addEventListener('click', e => {
+  if(e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#filters .chip').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  filtro = e.target.dataset.f;
+  render();
+});
+
+document.querySelectorAll('.example-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.getElementById('situacao').value = chip.dataset.ex;
+  });
+});
+
+document.getElementById('btnGerar').addEventListener('click', () => {
+  const texto = document.getElementById('situacao').value.trim();
+  if(!texto) return;
+  const objecao = diagnosticar(texto);
+  document.getElementById('rDiag').textContent = objecao.titulo;
+  document.getElementById('rClass').textContent = classificarOportunidade(selecionada);
+  document.getElementById('rArg').textContent = objecao.argumento;
+  document.getElementById('rWa').textContent = gerarMensagem(selecionada);
+  document.getElementById('rNext').textContent = 'Confirmar 1 sabor + quantidade de teste e agendar retorno em 2 semanas para checar giro.';
+  document.getElementById('response').classList.add('show');
+});
+
+document.getElementById('btnCopy').addEventListener('click', () => {
+  const txt = document.getElementById('rWa').textContent;
+  navigator.clipboard?.writeText(txt);
+  const btn = document.getElementById('btnCopy');
+  const old = btn.textContent;
+  btn.textContent = 'copiado!';
+  setTimeout(() => btn.textContent = old, 1200);
+});
+
+render();
+</script>
+</body>
+</html>
