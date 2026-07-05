@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Ambiente e segredos
+.env
+
+# Áudio gerado em runtime
+audio_output/
+*.wav
+*.mp3
+
+# Logs
+logs/
+*.log
+
+# Testes e cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# SO
+.DS_Store
+Thumbs.db

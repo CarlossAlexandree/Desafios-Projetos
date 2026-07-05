@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  virtual-assistant:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: virtual-assistant
+    env_file:
+      - ../.env
+    volumes:
+      - ../logs:/app/logs
+      - ../audio_output:/app/audio_output
+    # Acesso ao microfone e áudio do host (necessário apenas em Linux
+    # com PulseAudio/ALSA; em macOS/Windows use o assistente localmente,
+    # fora do container, pois passthrough de áudio não é suportado).
+    devices:
+      - /dev/snd:/dev/snd
+    restart: unless-stopped

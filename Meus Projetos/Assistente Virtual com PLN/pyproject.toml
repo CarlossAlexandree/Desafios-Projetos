@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "virtual-assistant"
+version = "1.0.0"
+description = "Assistente virtual com PLN: text-to-speech, speech-to-text e comandos por voz"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Seu Nome", email = "seu.email@example.com" }]
+keywords = ["nlp", "speech-recognition", "tts", "stt", "virtual-assistant"]
+
+dependencies = [
+    "SpeechRecognition==3.10.4",
+    "gTTS==2.5.1",
+    "playsound3==2.5",
+    "pyaudio==0.2.14",
+    "wikipedia==1.4.0",
+    "pyjokes==0.6.0",
+    "geopy==2.4.1",
+    "requests==2.32.3",
+    "python-dotenv==1.0.1",
+    "pygame==2.6.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.2.2",
+    "pytest-cov==5.0.0",
+    "pytest-mock==3.14.0",
+    "flake8==7.1.0",
+    "black==24.4.2",
+]
+
+[project.scripts]
+virtual-assistant = "virtual_assistant.core.assistant:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
