@@ -1,0 +1,21 @@
+project:
+
+  name: Image Recommendation System
+
+dataset:
+
+  root: data/raw
+
+embeddings:
+
+  model: openclip
+
+index:
+
+  type: faiss
+
+api:
+
+  host: localhost
+
+  port: 8000
