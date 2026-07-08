@@ -2,7 +2,7 @@
 
 > Agente de IA que analisa **imagens de diagramas de arquitetura de software** e gera automaticamente um **modelo de ameaças** baseado na metodologia **STRIDE**.
 
-[![CI](https://github.com/SEU_USUARIO/stride-vision-agent/actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
+[![CI](https://github.com/CarlossAlexandree/Agent_Stride_Vision/actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-informational)
