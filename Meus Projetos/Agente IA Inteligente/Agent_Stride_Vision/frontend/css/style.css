@@ -1,0 +1,295 @@
+/* ============================================================
+   STRIDE Vision Agent — Design tokens
+   Paleta: "blueprint" (prancheta de engenharia digital)
+   ============================================================ */
+:root {
+  /* Cor */
+  --bg: #0A0E14;
+  --bg-grid-line: rgba(90, 156, 214, 0.07);
+  --panel: #10161F;
+  --panel-border: #1E2733;
+  --ink: #E8EEF4;
+  --ink-muted: #8B9AAB;
+  --accent: #4FD1C5;
+  --accent-dim: rgba(79, 209, 197, 0.15);
+  --danger: #FF6B5E;
+  --danger-dim: rgba(255, 107, 94, 0.15);
+  --warning: #F2B84B;
+  --warning-dim: rgba(242, 184, 75, 0.15);
+  --ok: #6FCF97;
+
+  /* Tipografia */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Layout */
+  --radius: 3px;
+  --gap: 1.5rem;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--bg-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+h1, h2, h3 { font-family: var(--font-mono); font-weight: 700; margin: 0; }
+
+/* ---------- Title block (carimbo de prancheta) ---------- */
+.titleblock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, rgba(16,22,31,0.9), rgba(16,22,31,0.6));
+  backdrop-filter: blur(6px);
+}
+
+.titleblock__brand { display: flex; align-items: center; gap: 0.85rem; }
+.titleblock__mark {
+  font-size: 1.75rem;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-dim);
+}
+.titleblock__title { font-size: 1.15rem; letter-spacing: 0.02em; }
+.titleblock__subtitle { margin: 0.2rem 0 0; font-size: 0.8rem; color: var(--ink-muted); }
+
+.titleblock__stamp {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  border: 1px solid var(--panel-border);
+  padding: 0.5rem 1rem;
+}
+.titleblock__stamp dt { color: var(--ink-muted); letter-spacing: 0.08em; }
+.titleblock__stamp dd { margin: 0.1rem 0 0; color: var(--ink); font-weight: 500; }
+
+/* ---------- Layout ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: var(--gap);
+  padding: var(--gap);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+/* ---------- Formulário ---------- */
+.field { margin-bottom: 1.1rem; }
+.field__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+input[type="text"], select, textarea {
+  width: 100%;
+  background: #0D1219;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  color: var(--ink);
+  padding: 0.6rem 0.7rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+textarea { resize: vertical; }
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 140px;
+  border: 1px dashed var(--panel-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  padding: 1rem;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.dropzone:hover, .dropzone.is-dragover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.dropzone__hint { color: var(--ink-muted); font-size: 0.82rem; }
+.dropzone__preview { max-width: 100%; max-height: 160px; border-radius: var(--radius); }
+
+/* ---------- Botões ---------- */
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  border-radius: var(--radius);
+  padding: 0.7rem 1.1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn--primary {
+  width: 100%;
+  background: var(--accent);
+  color: #06201D;
+  font-weight: 700;
+}
+.btn--primary:hover { filter: brightness(1.08); }
+.btn--primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--panel-border);
+  color: var(--ink);
+}
+.btn--ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.btn--ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn__spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(6,32,29,0.35);
+  border-top-color: #06201D;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.field__error {
+  margin-top: 0.75rem;
+  color: var(--danger);
+  font-size: 0.82rem;
+  border-left: 2px solid var(--danger);
+  padding-left: 0.6rem;
+}
+
+/* ---------- Resultados ---------- */
+.results-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.results-toolbar__title { font-size: 1rem; }
+
+.empty-state {
+  color: var(--ink-muted);
+  border: 1px dashed var(--panel-border);
+  border-radius: var(--radius);
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.summary-card, .suggestions-card {
+  background: #0D1219;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.summary-card h3, .suggestions-card h3, .graph-wrapper h3, .threats-section h3 {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.summary-card p { margin: 0; color: var(--ink); }
+
+.graph-wrapper { margin-bottom: 1.25rem; }
+.graph-wrapper__hint { color: var(--ink-muted); font-weight: 400; text-transform: none; letter-spacing: normal; font-size: 0.75rem; }
+#cy {
+  width: 100%;
+  height: 380px;
+  background: #0D1219;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+}
+
+.threats-section { margin-bottom: 1.25rem; }
+.threats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.threat-category {
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.threat-category__header {
+  padding: 0.6rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #06201D;
+}
+.threat-category__body { padding: 0.75rem 0.9rem; background: #0D1219; }
+
+.threat-item { margin-bottom: 0.85rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--panel-border); }
+.threat-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.threat-item__scenario { font-size: 0.85rem; margin: 0 0 0.3rem; }
+.threat-item__meta { display: flex; flex-wrap: wrap; gap: 0.4rem; font-size: 0.72rem; color: var(--ink-muted); }
+
+.severity-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.severity-badge--baixa { background: rgba(111,207,151,0.15); color: var(--ok); }
+.severity-badge--media { background: var(--warning-dim); color: var(--warning); }
+.severity-badge--alta, .severity-badge--critica { background: var(--danger-dim); color: var(--danger); }
+
+.suggestions-card ul { margin: 0; padding-left: 1.2rem; }
+.suggestions-card li { margin-bottom: 0.4rem; font-size: 0.88rem; }
+
+.app-footer {
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  padding: 1.5rem;
+}
+
+/* ---------- Impressão ---------- */
+@media print {
+  body { background: #fff !important; color: #000; }
+  .titleblock, .panel--form, .results-toolbar, .app-footer, .empty-state { display: none !important; }
+  .panel--results { border: none; padding: 0; }
+  #cy { border: 1px solid #ccc; }
+}

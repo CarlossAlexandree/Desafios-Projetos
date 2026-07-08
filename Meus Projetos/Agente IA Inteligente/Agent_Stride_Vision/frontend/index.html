@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STRIDE Vision Agent — Análise de Ameaças em Arquiteturas</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Título estilo "carimbo de prancheta de engenharia" -->
+  <header class="titleblock">
+    <div class="titleblock__brand">
+      <span class="titleblock__mark">◈</span>
+      <div>
+        <h1 class="titleblock__title">STRIDE Vision Agent</h1>
+        <p class="titleblock__subtitle">Modelagem de ameaças assistida por IA</p>
+      </div>
+    </div>
+    <dl class="titleblock__stamp">
+      <div><dt>MÉTODO</dt><dd>STRIDE</dd></div>
+      <div><dt>ANALISTA</dt><dd id="stamp-provider">—</dd></div>
+      <div><dt>STATUS</dt><dd id="stamp-status">Aguardando</dd></div>
+    </dl>
+  </header>
+
+  <main class="layout">
+
+    <!-- Painel lateral: formulário -->
+    <section class="panel panel--form" aria-label="Formulário de análise">
+      <form id="analysis-form">
+
+        <div class="field">
+          <label class="field__label" for="imagem">01 · Diagrama de arquitetura</label>
+          <label class="dropzone" id="dropzone" for="imagem">
+            <input type="file" id="imagem" name="imagem" accept="image/png,image/jpeg,image/webp" required hidden />
+            <span class="dropzone__hint" id="dropzone-hint">Clique ou arraste a imagem (PNG, JPG, WEBP — até 8MB)</span>
+            <img id="preview" class="dropzone__preview" alt="Pré-visualização do diagrama" hidden />
+          </label>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="tipo_aplicacao">02 · Tipo de aplicação</label>
+          <select id="tipo_aplicacao" name="tipo_aplicacao" required>
+            <option value="Web Application">Web Application</option>
+            <option value="Mobile Application">Mobile Application</option>
+            <option value="API / Microsserviço">API / Microsserviço</option>
+            <option value="Desktop Application">Desktop Application</option>
+            <option value="Cloud Native / Serverless">Cloud Native / Serverless</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="autenticacao">03 · Métodos de autenticação</label>
+          <input type="text" id="autenticacao" name="autenticacao" placeholder="Ex: OAuth2, JWT, Basic Auth, Nenhuma" required />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="acesso_internet">04 · Exposição à internet</label>
+          <select id="acesso_internet" name="acesso_internet" required>
+            <option value="Público (exposto à internet)">Público (exposto à internet)</option>
+            <option value="Interno (rede privada / VPN)">Interno (rede privada / VPN)</option>
+            <option value="Híbrido">Híbrido</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="dados_sensiveis">05 · Dados sensíveis envolvidos</label>
+          <input type="text" id="dados_sensiveis" name="dados_sensiveis" placeholder="Ex: dados pessoais, financeiros, saúde" required />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="descricao_aplicacao">06 · Contexto adicional (opcional)</label>
+          <textarea id="descricao_aplicacao" name="descricao_aplicacao" rows="4" placeholder="Cole aqui trechos do README ou uma descrição livre da aplicação"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary" id="submit-btn">
+          <span class="btn__label">Analisar arquitetura</span>
+          <span class="btn__spinner" hidden></span>
+        </button>
+
+        <p class="field__error" id="form-error" role="alert" hidden></p>
+      </form>
+    </section>
+
+    <!-- Painel principal: resultado -->
+    <section class="panel panel--results" aria-label="Resultado da análise">
+
+      <div class="results-toolbar">
+        <h2 class="results-toolbar__title">Modelo de ameaças</h2>
+        <button type="button" class="btn btn--ghost" id="print-btn" disabled>
+          🖨 Imprimir / Exportar PDF
+        </button>
+      </div>
+
+      <div id="empty-state" class="empty-state">
+        <p>Preencha o formulário ao lado e envie um diagrama de arquitetura para começar.</p>
+      </div>
+
+      <div id="results" class="results" hidden>
+        <article class="summary-card">
+          <h3>Resumo executivo</h3>
+          <p id="summary-text"></p>
+        </article>
+
+        <div class="graph-wrapper">
+          <h3>Diagrama analisado <span class="graph-wrapper__hint">(componentes citados nas ameaças ficam destacados)</span></h3>
+          <div id="cy" role="img" aria-label="Grafo do diagrama de arquitetura"></div>
+        </div>
+
+        <div class="threats-section">
+          <h3>Ameaças identificadas por categoria STRIDE</h3>
+          <div id="threats-grid" class="threats-grid"></div>
+        </div>
+
+        <article class="suggestions-card">
+          <h3>Sugestões de melhoria da análise</h3>
+          <ul id="suggestions-list"></ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>STRIDE Vision Agent — projeto educacional de threat modeling assistido por IA.</p>
+  </footer>
+
+  <script src="https://unpkg.com/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

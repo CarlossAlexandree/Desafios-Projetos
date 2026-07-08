@@ -1,0 +1,18 @@
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# FastAPI usa Depends()/Form()/File() como valor padrão de argumento —
+# é o padrão idiomático do framework, não um bug.
+"app/api/routes.py" = ["B008"]
+# Texto literal enviado ao LLM — não deve ser quebrado por estética de lint.
+"app/services/prompt_builder.py" = ["E501"]

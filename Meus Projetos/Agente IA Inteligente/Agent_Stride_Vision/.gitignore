@@ -1,0 +1,20 @@
+# Ambientes / segredos
+.env
+**/.env
+.venv/
+**/.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Node (caso adicione build tooling no futuro)
+node_modules/
+
+# Sistema / IDE
+.DS_Store
+.vscode/
+.idea/
