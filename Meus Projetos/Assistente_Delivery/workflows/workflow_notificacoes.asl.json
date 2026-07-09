@@ -1,0 +1,17 @@
+{
+  "Comment": "Assistente de Delivery - Workflow de notificacoes push",
+  "StartAt": "GerarMensagem",
+  "States": {
+    "GerarMensagem": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:ACCOUNT_ID:function:gerar-mensagem",
+      "Next": "EnviarPush"
+    },
+    "EnviarPush": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:ACCOUNT_ID:function:enviar-push",
+      "End": true
+    }
+  },
+  "TimeoutSeconds": 60
+}

@@ -1,0 +1,54 @@
+{
+  "Comment": "Assistente de Delivery - Workflow de processamento de pedido",
+  "StartAt": "ValidarPedido",
+  "States": {
+    "ValidarPedido": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:ACCOUNT_ID:function:validar-pedido",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 3,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "PedidoValido?"
+    },
+    "PedidoValido?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.valido",
+          "BooleanEquals": true,
+          "Next": "NotificarRestaurante"
+        }
+      ],
+      "Default": "PedidoInvalido"
+    },
+    "NotificarRestaurante": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-west-2:ACCOUNT_ID:novo-pedido-restaurante",
+        "Message.$": "$"
+      },
+      "Next": "AtualizarStatusFila"
+    },
+    "AtualizarStatusFila": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sqs:sendMessage",
+      "Parameters": {
+        "QueueUrl": "https://sqs.us-west-2.amazonaws.com/ACCOUNT_ID/status-pedido",
+        "MessageBody.$": "$"
+      },
+      "End": true
+    },
+    "PedidoInvalido": {
+      "Type": "Fail",
+      "Error": "PedidoInvalidoError",
+      "Cause": "Campos obrigatorios ausentes no pedido (usuarioId, restauranteId, itens)."
+    }
+  },
+  "TimeoutSeconds": 600
+}

@@ -1,0 +1,58 @@
+{
+  "Comment": "Assistente de Delivery - Workflow de IA. Usa Hugging Face Inference API (gratuita) no lugar do Amazon Bedrock.",
+  "StartAt": "CapturarFeedback",
+  "States": {
+    "CapturarFeedback": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:ACCOUNT_ID:function:capturar-feedback",
+      "Next": "AnalisarSentimento"
+    },
+    "AnalisarSentimento": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:ACCOUNT_ID:function:analisar-sentimento-hf",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 3,
+          "MaxAttempts": 2,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "RegistrarResultado"
+    },
+    "RegistrarResultado": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:putItem",
+      "Parameters": {
+        "TableName": "FeedbacksPedidos",
+        "Item": {
+          "pedidoId": { "S.$": "$.pedidoId" },
+          "sentimento": { "S.$": "$.sentimento" },
+          "score": { "S.$": "$.score" },
+          "feedbackOriginal": { "S.$": "$.feedbackOriginal" }
+        }
+      },
+      "Next": "BomOuRuim?"
+    },
+    "BomOuRuim?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.sentimento",
+          "StringEquals": "Negative",
+          "Next": "NotificarAdmin"
+        }
+      ],
+      "Default": "Sucesso"
+    },
+    "NotificarAdmin": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:ACCOUNT_ID:function:notificar-admin",
+      "End": true
+    },
+    "Sucesso": {
+      "Type": "Succeed"
+    }
+  },
+  "TimeoutSeconds": 300
+}

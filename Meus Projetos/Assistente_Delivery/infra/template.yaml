@@ -1,0 +1,203 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Assistente de Delivery - Step Functions + Lambda + DynamoDB + SNS/SQS + Hugging Face
+
+Parameters:
+  HuggingFaceToken:
+    Type: String
+    NoEcho: true
+    Description: Token gratuito da Hugging Face (huggingface.co/settings/tokens)
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 15
+    MemorySize: 128
+
+Resources:
+
+  # ---------- DynamoDB ----------
+  TabelaPedidos:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Pedidos
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pedidoId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pedidoId
+          KeyType: HASH
+
+  TabelaFeedbacks:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: FeedbacksPedidos
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pedidoId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pedidoId
+          KeyType: HASH
+
+  # ---------- SNS / SQS ----------
+  TopicoNovoPedidoRestaurante:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: novo-pedido-restaurante
+
+  TopicoPush:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: push-cliente
+
+  TopicoAdmin:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: alertas-admin
+
+  FilaStatusPedido:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: status-pedido
+
+  # ---------- Lambdas ----------
+  FuncaoValidarPedido:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: validar-pedido
+      Handler: validar_pedido.lambda_handler
+      CodeUri: ../lambdas/
+      Environment:
+        Variables:
+          TABELA_PEDIDOS: !Ref TabelaPedidos
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaPedidos
+
+  FuncaoGerarMensagem:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: gerar-mensagem
+      Handler: gerar_mensagem.lambda_handler
+      CodeUri: ../lambdas/
+
+  FuncaoEnviarPush:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: enviar-push
+      Handler: enviar_push.lambda_handler
+      CodeUri: ../lambdas/
+      Environment:
+        Variables:
+          TOPICO_PUSH_ARN: !Ref TopicoPush
+      Policies:
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt TopicoPush.TopicName
+
+  FuncaoCapturarFeedback:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: capturar-feedback
+      Handler: capturar_feedback.lambda_handler
+      CodeUri: ../lambdas/
+
+  FuncaoAnalisarSentimento:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: analisar-sentimento-hf
+      Handler: analisar_sentimento_hf.lambda_handler
+      CodeUri: ../lambdas/
+      Timeout: 20
+      Environment:
+        Variables:
+          HF_API_TOKEN: !Ref HuggingFaceToken
+
+  FuncaoNotificarAdmin:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: notificar-admin
+      Handler: notificar_admin.lambda_handler
+      CodeUri: ../lambdas/
+      Environment:
+        Variables:
+          TOPICO_ADMIN_ARN: !Ref TopicoAdmin
+      Policies:
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt TopicoAdmin.TopicName
+
+  # ---------- Step Functions ----------
+  WorkflowPedido:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: assistente-delivery-pedido
+      DefinitionUri: ../workflows/workflow_pedido.asl.json
+      DefinitionSubstitutions:
+        ValidarPedidoArn: !GetAtt FuncaoValidarPedido.Arn
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FuncaoValidarPedido
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt TopicoNovoPedidoRestaurante.TopicName
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt FilaStatusPedido.QueueName
+
+  WorkflowNotificacoes:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: assistente-delivery-notificacoes
+      DefinitionUri: ../workflows/workflow_notificacoes.asl.json
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FuncaoGerarMensagem
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FuncaoEnviarPush
+
+  WorkflowIASentimento:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: assistente-delivery-ia-sentimento
+      DefinitionUri: ../workflows/workflow_ia_sentimento.asl.json
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FuncaoCapturarFeedback
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FuncaoAnalisarSentimento
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FuncaoNotificarAdmin
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TabelaFeedbacks
+
+  # ---------- API Gateway ----------
+  ApiDelivery:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: assistente-delivery-api
+      StageName: prod
+
+  FuncaoApiIniciarPedido:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: api-iniciar-pedido
+      Handler: api_iniciar_pedido.lambda_handler
+      CodeUri: ../lambdas/
+      Environment:
+        Variables:
+          STATE_MACHINE_ARN: !Ref WorkflowPedido
+      Policies:
+        - StepFunctionsExecutionPolicy:
+            StateMachineName: !GetAtt WorkflowPedido.Name
+      Events:
+        NovoPedido:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiDelivery
+            Path: /pedidos
+            Method: post
+
+Outputs:
+  UrlApi:
+    Description: Endpoint publico da API
+    Value: !Sub "https://${ApiDelivery}.execute-api.${AWS::Region}.amazonaws.com/prod/pedidos"
